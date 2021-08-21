@@ -1,0 +1,124 @@
+<!--
+ * @Description: 富文本编辑器
+ * @Author: Wu Wei
+ * @Date: 2021-08-21 13:49:27
+ * @LastEditTime: 2021-08-21 14:52:02
+ * @LastEditors: Wu Wei
+ * @FilePath: \play\test.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            height:100vh;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            overflow: hidden;
+        }
+        /* iframe{
+            background:pink;
+            width: 50%;
+            height: inherit;
+            border:2px solid khaki;
+        } */
+        /* .divEditor{
+            background:rgb(223, 175, 18);
+            width: 50%;
+            height: inherit;
+            padding: 10px;
+        } */
+        .codeShow{
+            background:rgb(115, 60, 202);
+            width: 50%;
+            height: inherit;
+            border:2px solid khaki;
+        }
+        #myDiv{
+            background:rgb(223, 175, 18);
+            width: 50%;
+            height: inherit;
+        }
+        #codeEditor{
+            background:rgb(177, 43, 143);
+            width: 100%;
+            height: inherit; 
+        }
+        .tool-bar{
+          height: 60px;
+          width: 100%;
+          background: rgb(14, 150, 212);
+          border-bottom: 3px solid rgb(170, 41, 41);
+          /* display: flex;
+          justify-content: space-around; */
+        }
+        button{
+            line-height:30px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <iframe src="" name="myEditor" frameborder="0"></iframe> -->
+    <div id="myDiv">
+        <div class="tool-bar">
+            <button id="btn1" type="button">超链接</button>
+            <button id="btn2" type="button">字体加粗</button>
+            <button id="btn3" type="button">图片</button>
+            <button id="btn4" type="button">缩进</button>
+        </div>
+        <div contenteditable="true" class="divEditor" id="codeEditor"></div>
+    </div>
+    <div class="codeShow" id="codeShow"></div>
+    <script>
+        const cars = ["🚗", "🚙", "🚕"];
+        for (const car of cars){
+            // Drive the car
+            console.log(`This is the car ${car}`);
+        }
+        // 监听载入事件
+        // window.addEventListener("load",function(){
+        //     frames["myEditor"].document.designMode = "on";
+        // })
+
+        function getEl(el){
+            return document.getElementById(el)
+        }
+        let codeEditor = getEl("codeEditor");
+        let codeShow = getEl("codeShow");
+        let btn1 = getEl("btn1");
+        let btn2 = getEl("btn2");
+        let btn3 = getEl("btn3");
+        let btn4 = getEl("btn4");
+        
+        btn1.onclick = () =>{
+            document.execCommand("createlink",false,"https://developer.mozilla.org/en-US/docs/Web/API/Document/execCommand")
+        }
+        btn2.onclick = () =>{
+            document.execCommand("bold",false,null)
+        }
+        btn3.onclick = () =>{
+            document.execCommand("insertimage",false,"https://image.baidu.com/search/detail?ct=503316480&z=&tn=baiduimagedetail&ipn=d&word=%E8%83%A1%E6%AD%8C%E5%89%A7%E7%85%A7&step_word=&ie=utf-8&in=&cl=2&lm=-1&st=-1&hd=&latest=&copyright=&cs=3427171701,3645368625&os=3606240645,453956655&simid=0,0&pn=5&rn=1&di=112090&ln=1288&fr=&fmq=1629528555917_R&ic=&s=undefined&se=&sme=&tab=0&width=&height=&face=undefined&is=0,0&istype=2&ist=&jit=&bdtype=0&spn=0&pi=0&gsm=0&objurl=https%3A%2F%2Fgimg2.baidu.com%2Fimage_search%2Fsrc%3Dhttp%253A%252F%252Fdingyue.ws.126.net%252F2020%252F0523%252F570760eep00qas47q00cmc000go00cic.png%26refer%3Dhttp%253A%252F%252Fdingyue.ws.126.net%26app%3D2002%26size%3Df9999%2C10000%26q%3Da80%26n%3D0%26g%3D0n%26fmt%3Djpeg%3Fsec%3D1632120556%26t%3D6c297465322814e52abd9f8b3f9e3715&rpstart=0&rpnum=0&adpicid=0&nojc=undefined")
+        }
+        btn4.onclick = () =>{
+            document.execCommand("indent",false,null)
+        }
+        //实时展示的代码
+        let codeRealTime = () =>{
+           codeShow.innerHTML = codeEditor.innerHTML;
+        }
+        var observer = new MutationObserver(codeRealTime);
+        let observeInit ={
+            childList: true,//是否观察子节点的变动
+            characterData: true,//是否节点内容或者节点文本的变动
+            subtree: true //是否观察所有后代节点的变动
+        }
+        observer.observe(codeEditor,observeInit);
+    </script>
+</body>
+</html>
